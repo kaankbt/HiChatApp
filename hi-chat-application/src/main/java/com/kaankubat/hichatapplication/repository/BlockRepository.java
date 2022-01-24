@@ -10,11 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface BlockRepository extends JpaRepository<BlockModel,Long> {
-    List<BlockModel> findByAngryId(Long angryId);
+public interface BlockRepository extends JpaRepository<BlockModel,Long>{
+    List<BlockModel> findAllByAngryId(Long angryId);
 
     @Transactional
     @Modifying
     @Query("delete from BlockModel b where b.angryId = :angryId and b.blockedId = :blockedId")
     void unblock(Long angryId, Long blockedId);
+
 }
