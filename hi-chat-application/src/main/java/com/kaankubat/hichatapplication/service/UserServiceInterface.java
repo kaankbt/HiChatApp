@@ -5,6 +5,7 @@ import com.kaankubat.hichatapplication.model.User;
 import java.util.List;
 import java.util.Set;
 
+
 public interface UserServiceInterface {
 
     String save(User user) throws Exception;

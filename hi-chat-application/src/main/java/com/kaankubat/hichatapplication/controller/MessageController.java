@@ -3,6 +3,7 @@ package com.kaankubat.hichatapplication.controller;
 
 import java.util.List;
 
+import com.kaankubat.hichatapplication.model.MessageRecorderModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -62,13 +63,12 @@ public class MessageController {
     }
 
     @GetMapping("/mymessages")
-    public List<MessageModel> getMyMessages(@RequestParam String receiverName) throws Exception{
+    public List<MessageRecorderModel> getMyMessages(@RequestParam String receiverName) throws Exception{
         User user = userServiceInterface.findByUserName(receiverName);
         if(user.getId() == null) {
             throw new Exception("There is no user with this " + user.getUserName() + "user name!");
         }
-        //
-        List<MessageModel> response = messageRecorder.findAllByReceiverName(receiverName);
+        List<MessageRecorderModel> response = messageRecorder.findAllByReceiverName(receiverName);
         return response;
 
     }

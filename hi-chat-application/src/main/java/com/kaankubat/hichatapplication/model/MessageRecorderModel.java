@@ -11,7 +11,7 @@ import com.sun.istack.NotNull;
 
 
 @Entity
-@Table(name = "messagesRecords")
+@Table(name="messagesRecords")
 public class MessageRecorderModel {
 
     @Id
