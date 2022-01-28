@@ -1,11 +1,14 @@
 package com.kaankubat.hichatapplication.service;
 
+import com.kaankubat.hichatapplication.enums.ActivityType;
+import com.kaankubat.hichatapplication.model.ActivityLogModel;
 import com.kaankubat.hichatapplication.model.BlockModel;
 import com.kaankubat.hichatapplication.model.User;
 import com.kaankubat.hichatapplication.repository.ActivityLogModelRepo;
 import com.kaankubat.hichatapplication.repository.BlockRepository;
 import com.kaankubat.hichatapplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +32,27 @@ public class UserService implements UserServiceInterface{
         this.blockedUserRepo = blockedRepo;
     }
 
+
+    @Override
+    public String save(User user) throws Exception {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassWord());
+        ActivityLogModel entity = new ActivityLogModel();
+        user.setPassWord(encodedPassword);
+        try {
+            userRepo.save(user);
+        } catch (Exception e) {
+            entity.setActivity(ActivityType.INVALID_REGISTER);
+            entity.setUserName("---");
+            activityLogEntityRepo.save(entity);
+            throw new Exception("Invalid Register");
+        }
+
+        entity.setUserName(user.getUserName());
+        entity.setActivity(ActivityType.REGISTER);
+        activityLogEntityRepo.save(entity);
+        return user.getUserName();
+    }
 
     @Override
     public Boolean block(String angryName, String blockedName) {

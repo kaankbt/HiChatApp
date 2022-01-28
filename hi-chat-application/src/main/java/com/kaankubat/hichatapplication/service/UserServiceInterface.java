@@ -7,6 +7,7 @@ import java.util.Set;
 
 public interface UserServiceInterface {
 
+    String save(User user) throws Exception;
 
     Boolean block(String angry, String blocked);
 
